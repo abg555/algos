@@ -8,7 +8,7 @@ Si la computadora es 1000 veces más rápida, en una hora hace 1000 veces más o
 
 $$\text{costo}(n') = 1000 \cdot \text{costo}(n)$$
 
-Lo que me piden es el factor $k = n'/n$, o sea, cuántas veces más grande es la entrada que ahora se puede resolver.
+El ejercicio pide el factor $k = n'/n$, o sea, cuántas veces más grande es la entrada que ahora se puede resolver.
 
 Las constantes de $\Theta$ no importan aquí porque aparecen en los dos lados de la igualdad y se cancelan.
 
@@ -31,7 +31,7 @@ El factor es $k = \sqrt{1000} \approx 31.6$, y no depende de $n$. Aunque la máq
 
 ### Casos de prueba
 
-Prueba 1: el factor no depende del presupuesto. Da lo mismo de qué $n$ se parta: siempre sale 31.62.
+Prueba 1: el factor no depende del presupuesto. El resultado no depende del $n$ de partida: siempre sale 31.62.
 
 ```
  presupuesto        n antes        n despues   factor
@@ -41,7 +41,7 @@ Prueba 1: el factor no depende del presupuesto. Da lo mismo de qué $n$ se parta
        10^15     31,622,776    1,000,000,000    31.62
 ```
 
-Prueba 2: con un algoritmo de verdad. Para comprobar que las constantes no importan, cuento las comparaciones de selection sort, que son $\frac{n(n-1)}{2}$. Tiene una constante $\frac{1}{2}$ y un término $-n$ de más, pero da lo mismo:
+Prueba 2: con un algoritmo de verdad. Para comprobar que las constantes no importan, se cuentan las comparaciones de selection sort, que son $\frac{n(n-1)}{2}$. Tiene una constante $\frac{1}{2}$ y un término $-n$ de más, pero el resultado no cambia:
 
 ```
 n antes = 2,683,282  n despues = 84,852,814  factor = 31.6
@@ -63,7 +63,7 @@ Para que un algoritmo cuadrático resuelva entradas 1000 veces más grandes, hac
 
 ## Parte 2: caso $\Theta(n \log n)$
 
-Aquí no se puede despejar tan fácil. Pongo $n' = k \cdot n$:
+Aquí no se puede despejar tan fácil. Sea $n' = k \cdot n$:
 
 $$k n \log(kn) = 1000 \cdot n \log n$$
 
@@ -73,13 +73,13 @@ $$k = 1000 \cdot \frac{\log n}{\log n + \log k}$$
 
 De aquí sale algo importante: el factor es un poco menor que 1000, porque la fracción es menor que 1, y además depende de $n$. Mientras más grande es $n$, más pesa $\log n$ frente a $\log k$, y más se acerca $k$ a 1000.
 
-Para tener un número concreto uso la misma suposición que la conferencia: $10^9$ operaciones por segundo durante una hora, o sea $3.6 \cdot 10^{12}$ operaciones. Con eso se resuelve $n \approx 10^{11}$, y $\log_2 n \approx 36.5$.
+Para tener un número concreto se usa la misma suposición que la conferencia: $10^9$ operaciones por segundo durante una hora, o sea $3.6 \cdot 10^{12}$ operaciones. Con eso se resuelve $n \approx 10^{11}$, y $\log_2 n \approx 36.5$.
 
-Pruebo con $k = 1000$ en el lado derecho, donde $\log_2 1000 \approx 10$:
+Primer intento: $k = 1000$ en el lado derecho, donde $\log_2 1000 \approx 10$:
 
 $$k \approx 1000 \cdot \frac{36.5}{36.5 + 10} \approx 785$$
 
-Vuelvo a meter $k = 785$, con $\log_2 785 \approx 9.6$:
+Segundo intento: $k = 785$, con $\log_2 785 \approx 9.6$:
 
 $$k \approx 1000 \cdot \frac{36.5}{36.5 + 9.6} \approx 792$$
 
@@ -92,29 +92,29 @@ Si la entrada creciera 1000 veces, pasaría de $10^{11}$ a $10^{14}$, y el traba
 - la $n$: 1000 veces;
 - el $\log n$: pasa de 36.5 a 46.5, o sea $\approx 1.27$ veces.
 
-En total serían $\approx 1273$ veces más trabajo, y la máquina nueva solo da 1000. Se pasa, así que la entrada tiene que crecer un poco menos. Al lado pongo los otros dos casos para comparar: con $n$ alcanza justo, y con $n^2$ sería un millón de veces más trabajo.
+En total serían $\approx 1273$ veces más trabajo, y la máquina nueva solo da 1000. Se pasa, así que la entrada tiene que crecer un poco menos. La gráfica muestra también los otros dos casos para comparar: con $n$ alcanza justo, y con $n^2$ sería un millón de veces más trabajo.
 
 ![trabajo](ejercicio-01-trabajo.png)
 
 ### Demostración: el factor está entre dos cotas
 
-Antes calculé $k \approx 790$ probando números. Ahora quiero demostrar algo que se cumpla siempre, para cualquier $n \ge 2$: que $k$ queda atrapado entre dos valores, una cota de abajo y una cota de arriba.
+Arriba se calculó $k \approx 790$ probando números. Ahora se demuestra algo que se cumpla siempre, para cualquier $n \ge 2$: que $k$ queda atrapado entre dos valores, una cota de abajo y una cota de arriba.
 
 $$\underbrace{1000 \cdot \frac{\log n}{\log n + \log 1000}}_{\text{cota de abajo}} \;<\; k \;<\; \underbrace{1000}_{\text{cota de arriba}}$$
 
-Todo sale de la ecuación que ya tenía:
+Todo sale de la ecuación de antes:
 
 $$k (\log n + \log k) = 1000 \log n$$
 
 #### Paso 0: $k$ es mayor que 1
 
-Es lo obvio: con una máquina más rápida se resuelven entradas más grandes, no más chicas, porque $n \log n$ es creciente. Entonces $k > 1$.
+Con una máquina más rápida se resuelven entradas más grandes, no más chicas, porque $n \log n$ es creciente. Entonces $k > 1$.
 
 Esto me sirve porque, si $k > 1$, entonces $\log k > 0$. Lo voy a usar en los dos pasos siguientes.
 
 #### Cota de arriba: $k < 1000$
 
-Lo hago por contradicción: supongo lo contrario y muestro que lleva a algo imposible.
+La demostración es por contradicción: se supone lo contrario y se llega a algo imposible.
 
 Supongamos que $k \ge 1000$, y miremos el lado izquierdo de la ecuación, $k(\log n + \log k)$.
 
@@ -131,19 +131,19 @@ Pero la ecuación dice que esos dos lados son iguales, y algo no puede ser a la 
 
 #### Cota de abajo
 
-Ahora uso la fórmula despejada:
+Ahora se usa la fórmula despejada:
 
 $$k = 1000 \cdot \frac{\log n}{\log n + \log k}$$
 
 1. Acabo de demostrar que $k < 1000$, así que $\log k < \log 1000$.
 
-2. Entonces el denominador de verdad es más chico que si pusiera $\log 1000$:
+2. Entonces el denominador de verdad es más chico que si se pusiera $\log 1000$:
    $$\log n + \log k \;<\; \log n + \log 1000$$
 
 3. Si divido entre algo más chico, el resultado es más grande. Entonces:
    $$k = 1000 \cdot \frac{\log n}{\log n + \log k} \;>\; 1000 \cdot \frac{\log n}{\log n + \log 1000} \;∎$$
 
-Lo bueno de esta cota es que el lado derecho ya no tiene $k$, así que se puede calcular directamente.
+Esta cota tiene la ventaja de que el lado derecho ya no tiene $k$, así que se puede calcular directamente.
 
 #### ¿Qué pasa cuando $n$ crece mucho?
 
@@ -200,7 +200,7 @@ Prueba 4: búsqueda contra fórmula contra la cota de abajo. Comparo el factor r
 
 La fórmula coincide con la búsqueda, y el factor siempre queda entre la cota de abajo y 1000, como demostré.
 
-Prueba 5: con un algoritmo de verdad. Cuento las comparaciones de merge sort en el peor caso, $C(n) = C(\lceil n/2 \rceil) + C(\lfloor n/2 \rfloor) + n - 1$:
+Prueba 5: con un algoritmo de verdad. Se cuentan las comparaciones de merge sort en el peor caso, $C(n) = C(\lceil n/2 \rceil) + C(\lfloor n/2 \rfloor) + n - 1$:
 
 ```
 n antes = 101,011,863,607  n despues = 79,590,159,326,709  factor = 787.9
@@ -222,7 +222,7 @@ Prueba 6: otras mejoras de velocidad. El factor siempre queda un poco por debajo
 
 ## Comprobación
 
-Modifiqué el programa de la sección 7 de la conferencia para que calcule el $n$ máximo con 1 hora y con 1000 horas, que es lo mismo que una máquina 1000 veces más rápida:
+Se modificó el programa de la sección 7 de la conferencia para que calcule el $n$ máximo con 1 hora y con 1000 horas, que es lo mismo que una máquina 1000 veces más rápida:
 
 ```python
 import math
@@ -256,10 +256,3 @@ n log n 98574774544 78008697597778 791.3657216934126
 ```
 
 Coincide con lo calculado a mano: 31.6 y unos 790.
-
-## Respuesta
-
-- $\Theta(n^2)$: la entrada crece $\sqrt{1000} \approx 31.6$ veces.
-- $\Theta(n \log n)$: la entrada crece un poco menos de 1000 veces, unas **790** para los tamaños de la conferencia. Es casi lineal, porque el $\log n$ cambia muy poco cuando $n$ se multiplica por 1000 (solo le suma unos 10).
-
-La conclusión es que una máquina más rápida le sirve mucho más a un algoritmo $n \log n$ que a uno cuadrático.
